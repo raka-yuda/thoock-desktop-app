@@ -1,3 +1,4 @@
+import { BulkActions } from "../components/bulk-actions";
 import {
   ArrowRightIcon,
   FileCsvIcon,
@@ -680,11 +681,11 @@ export function Briefs({
         ]}
       />
       {selected.size > 0 && (
-        <div className="selection-bar">
-          <strong>{selected.size} briefs selected</strong>
-          <Button onClick={() => onSelect([...selected], false)}>
-            Clear selection
-          </Button>
+        <BulkActions
+          count={selected.size}
+          noun="brief"
+          onClear={() => onSelect([...selected], false)}
+        >
           <Button
             variant="primary"
             onClick={() => navigate("generation", { bulk: "1" })}
@@ -692,7 +693,7 @@ export function Briefs({
             Generate selected
             <ArrowRightIcon size={16} />
           </Button>
-        </div>
+        </BulkActions>
       )}
       {choice && (
         <AddMethod

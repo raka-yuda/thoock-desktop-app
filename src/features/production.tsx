@@ -1,6 +1,9 @@
+import { BulkActions } from "../components/bulk-actions";
 import {
   ArrowRightIcon,
   CheckIcon,
+  ShieldCheckIcon,
+  XCircleIcon,
   DownloadSimpleIcon,
   ImageIcon,
   MagnifyingGlassIcon,
@@ -524,25 +527,27 @@ export function Review({
         </section>
       )}
       {selected.size > 0 && (
-        <div className="selection-bar">
-          <strong>{selected.size} images selected</strong>
-          <Button onClick={() => onSelect([...selected], false)}>Clear</Button>
+        <BulkActions
+          count={selected.size}
+          onClear={() => onSelect([...selected], false)}
+        >
+          <Button variant="primary" onClick={() => setDecision("approved")}>
+            <ShieldCheckIcon size={20} />
+            Approve selected
+          </Button>
           <Button
+            className="metadata-action"
             disabled={selected.size > 50}
             onClick={() => setMetadataOpen(true)}
           >
-            <SparkleIcon size={17} />
-            Metadata
+            <SparkleIcon size={20} />
+            Generate AI metadata
           </Button>
           <Button variant="danger" onClick={() => setDecision("rejected")}>
-            <XIcon size={17} />
-            Reject
+            <XCircleIcon size={20} />
+            Reject selected
           </Button>
-          <Button variant="primary" onClick={() => setDecision("approved")}>
-            <CheckIcon size={17} />
-            Approve
-          </Button>
-        </div>
+        </BulkActions>
       )}
       {asset && (
         <ReviewDetail

@@ -317,3 +317,12 @@
   background: #25382b;
   color: #e2ece5;
 }
+[data-theme="dark"] .selection-emblem {
+  background: #274333;
+  color: #a7e8b7;
+}
+[data-theme="dark"] .selection-bar .metadata-action {
+  background: linear-gradient(#365b3d, #2c4c33);
+  color: #d4f5db;
+  border-color: #608367;
+}

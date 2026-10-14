@@ -54,3 +54,9 @@ Browser checks cover all pages at widths 1440, 1120, 900, and 720 px, expanded a
 The desktop review queue uses five columns at the standard and minimum native sizes. Each card places its decision beside the title and uses three icon badges for resolution, human review, and metadata readiness. Narrow previews reduce the column count.
 
 Research records persist topic behavior, result-count estimates, and four signals in an optional `details` object. Briefs persist supporting subjects, environment, style, orientation, copy space, composition, lighting, and planned Adobe metadata in `details`. Existing records without these objects still decode. New manual briefs create a starter prompt when the prompt is left blank.
+
+## Selection actions and table sorting
+
+Review image selection uses 28 px square checkboxes; the zoom tile is 40 × 40 px. Selection actions are fixed 20 px above the workspace viewport bottom, centered within the area beside the sidebar. The raised panel contains a selection summary, Approve selected, Generate AI metadata, Reject selected, and an icon button to clear selection. At narrow widths the actions wrap, then stack; the scrolling content reserves room beneath its last row. Brief selection uses the same shared panel.
+
+Data table column headings are keyboard-accessible sort buttons with directional indicators and `aria-sort`. A first click sorts ascending; another click reverses the direction. Numeric values sort numerically, text uses natural ordering, and dates use their original timestamps. Sorting applies to the full filtered set before pagination and returns to the first page. Action and selection columns do not sort. The date-order toolbar restores chronological sorting.
