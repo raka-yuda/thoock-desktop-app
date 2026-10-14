@@ -67,3 +67,48 @@ describe("entity selection", () => {
     expect(screen.getByText("Brief 01")).toBeVisible();
   });
 });
+
+it("sorts all filtered rows numerically before pagination and toggles header direction", async () => {
+  const user = userEvent.setup();
+  const values = [100, 2, 12, 9, 81, 33, 4, 7, 20, 10, 1, 60];
+  render(
+    <Table
+      rows={values.map((score, i) => ({
+        id: String(i),
+        score,
+        createdAt: `2026-01-${String(i + 1).padStart(2, "0")}`,
+      }))}
+      searchText={(row) => String(row.score)}
+      columns={[
+        {
+          label: "Score",
+          sortValue: (row) => row.score,
+          render: (row) => row.score,
+        },
+        { label: "Actions", render: () => "Open" },
+      ]}
+      empty={{ title: "Empty", description: "No rows" }}
+    />,
+  );
+  await user.click(screen.getByRole("button", { name: "Next page" }));
+  await user.click(screen.getByRole("button", { name: "Score" }));
+  expect(screen.getByText("Page 1 of 2")).toBeVisible();
+  const cells = () =>
+    Array.from(document.querySelectorAll("tbody tr td:first-child")).map(
+      (cell) => Number(cell.textContent),
+    );
+  expect(cells()).toEqual([1, 2, 4, 7, 9, 10, 12, 20, 33, 60]);
+  expect(screen.getByRole("columnheader", { name: "Score" })).toHaveAttribute(
+    "aria-sort",
+    "ascending",
+  );
+  await user.click(screen.getByRole("button", { name: "Score" }));
+  expect(cells()).toEqual([100, 81, 60, 33, 20, 12, 10, 9, 7, 4]);
+  expect(screen.getByRole("columnheader", { name: "Score" })).toHaveAttribute(
+    "aria-sort",
+    "descending",
+  );
+  expect(
+    screen.queryByRole("button", { name: "Actions" }),
+  ).not.toBeInTheDocument();
+});

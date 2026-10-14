@@ -705,6 +705,7 @@ export function Logs({
         columns={[
           {
             label: "Operation",
+            sortValue: (l) => l.operation,
             render: (l) => (
               <button
                 className="record-link"
@@ -717,6 +718,7 @@ export function Logs({
           },
           {
             label: "Provider / model",
+            sortValue: (l) => `${l.provider} ${l.model}`,
             render: (l) => (
               <>
                 {l.provider}
@@ -726,13 +728,19 @@ export function Logs({
           },
           {
             label: "Status",
+            sortValue: (l) => l.status,
             render: (l) => <Badge tone={l.status}>{l.status}</Badge>,
           },
           {
             label: "Duration",
+            sortValue: (l) => l.durationMs ?? 0,
             render: (l) => (l.durationMs ? `${l.durationMs} ms` : "Local task"),
           },
-          { label: "Created", render: (l) => date(l.createdAt) },
+          {
+            label: "Created",
+            sortValue: (l) => l.createdAt,
+            render: (l) => date(l.createdAt),
+          },
         ]}
       />
       {log && (

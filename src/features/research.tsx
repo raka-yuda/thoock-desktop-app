@@ -125,6 +125,7 @@ export function Opportunities({
         columns={[
           {
             label: "Topic",
+            sortValue: (o) => o.topic,
             render: (o) => (
               <button
                 className="record-link"
@@ -135,9 +136,10 @@ export function Opportunities({
               </button>
             ),
           },
-          { label: "Buyer", render: (o) => o.buyer },
+          { label: "Buyer", sortValue: (o) => o.buyer, render: (o) => o.buyer },
           {
             label: "Score",
+            sortValue: (o) => o.score,
             render: (o) => (
               <span
                 className="score"
@@ -150,6 +152,7 @@ export function Opportunities({
           },
           {
             label: "Supply",
+            sortValue: (o) => o.competition,
             render: (o) => (
               <Badge>
                 {o.competition < 35
@@ -161,7 +164,11 @@ export function Opportunities({
               </Badge>
             ),
           },
-          { label: "Created", render: (o) => date(o.createdAt) },
+          {
+            label: "Created",
+            sortValue: (o) => o.createdAt,
+            render: (o) => date(o.createdAt),
+          },
           {
             label: "Actions",
             render: (o) => (
@@ -620,6 +627,7 @@ export function Briefs({
         columns={[
           {
             label: "Brief",
+            sortValue: (b) => b.title,
             render: (b) => (
               <button
                 className="record-link"
@@ -632,6 +640,7 @@ export function Briefs({
           },
           {
             label: "Buyer / usage",
+            sortValue: (b) => `${b.buyer} ${b.usage}`,
             render: (b) => (
               <>
                 {b.buyer}
@@ -641,14 +650,21 @@ export function Briefs({
           },
           {
             label: "Prompt",
+            sortValue: (b) => b.prompt,
             className: "prompt-cell",
             render: (b) => <span title={b.prompt}>{b.prompt}</span>,
           },
           {
             label: "Images",
+            sortValue: (b) =>
+              data.assets.filter((a) => a.briefId === b.id).length,
             render: (b) => data.assets.filter((a) => a.briefId === b.id).length,
           },
-          { label: "Created", render: (b) => date(b.createdAt) },
+          {
+            label: "Created",
+            sortValue: (b) => b.createdAt,
+            render: (b) => date(b.createdAt),
+          },
           {
             label: "Actions",
             render: (b) => (

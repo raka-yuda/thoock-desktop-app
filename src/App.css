@@ -2641,3 +2641,26 @@ tbody tr {
     transform: translateX(24px);
   }
 }
+
+.column-sort {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 0;
+  padding: 6px 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.column-sort:hover {
+  color: var(--green);
+}
+.column-sort:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 4px;
+  border-radius: 3px;
+}
+.sort-indicator {
+  opacity: 0.5;
+}

@@ -19,6 +19,7 @@ export type Column<T> = {
   label: string;
   render: (row: T) => ReactNode;
   className?: string;
+  sortValue?: (row: T) => string | number;
 };
 export function toggleSelection(
   current: Set<string>,
@@ -76,6 +77,10 @@ export function Table<T extends RecordRow>({
   });
   const [page, setPage] = useState(1);
   const [ascending, setAscending] = useState(false);
+  const [sortColumn, setSortColumn] = useState<string | null>(null);
+  const activeColumn = columns.find(
+    (column) => column.label === sortColumn && column.sortValue,
+  );
   const filtered = useMemo(
     () =>
       rows
@@ -90,11 +95,20 @@ export function Table<T extends RecordRow>({
             (!from || localDateKey(row.createdAt) >= from) &&
             (!to || localDateKey(row.createdAt) <= to),
         )
-        .sort((a, b) =>
-          ascending
-            ? a.createdAt.localeCompare(b.createdAt)
-            : b.createdAt.localeCompare(a.createdAt),
-        ),
+        .sort((a, b) => {
+          const left = activeColumn?.sortValue?.(a) ?? a.createdAt;
+          const right = activeColumn?.sortValue?.(b) ?? b.createdAt;
+          const comparison =
+            typeof left === "number" && typeof right === "number"
+              ? left - right
+              : String(left).localeCompare(String(right), undefined, {
+                  numeric: true,
+                  sensitivity: "base",
+                });
+          return (
+            (ascending ? comparison : -comparison) || a.id.localeCompare(b.id)
+          );
+        }),
     [
       rows,
       searchText,
@@ -106,6 +120,7 @@ export function Table<T extends RecordRow>({
       from,
       to,
       ascending,
+      activeColumn,
     ],
   );
   const pages = Math.max(1, Math.ceil(filtered.length / 10));
@@ -334,11 +349,19 @@ export function Table<T extends RecordRow>({
         </span>
         <Button
           variant="ghost"
-          onClick={() => setAscending(!ascending)}
-          aria-label={`Sort ${ascending ? "newest" : "oldest"} first`}
+          onClick={() => {
+            setSortColumn(null);
+            setAscending(sortColumn ? false : !ascending);
+            setPage(1);
+          }}
+          aria-label={`Sort ${sortColumn || ascending ? "newest" : "oldest"} first`}
         >
           {ascending ? <ArrowUpIcon size={14} /> : <ArrowDownIcon size={14} />}
-          {ascending ? "Oldest first" : "Newest first"}
+          {activeColumn
+            ? `${activeColumn.label}: ${ascending ? "ascending" : "descending"}`
+            : ascending
+              ? "Oldest first"
+              : "Newest first"}
         </Button>
       </div>
       {filtered.length ? (
@@ -368,8 +391,48 @@ export function Table<T extends RecordRow>({
                   </th>
                 )}
                 {columns.map((column) => (
-                  <th key={column.label} className={column.className}>
-                    {column.label}
+                  <th
+                    key={column.label}
+                    className={column.className}
+                    aria-sort={
+                      column.sortValue
+                        ? activeColumn?.label === column.label
+                          ? ascending
+                            ? "ascending"
+                            : "descending"
+                          : "none"
+                        : undefined
+                    }
+                  >
+                    {column.sortValue ? (
+                      <button
+                        className="column-sort"
+                        onClick={() => {
+                          setAscending(
+                            activeColumn?.label === column.label
+                              ? !ascending
+                              : true,
+                          );
+                          setSortColumn(column.label);
+                          setPage(1);
+                        }}
+                      >
+                        {column.label}
+                        {activeColumn?.label === column.label ? (
+                          ascending ? (
+                            <ArrowUpIcon size={14} />
+                          ) : (
+                            <ArrowDownIcon size={14} />
+                          )
+                        ) : (
+                          <span className="sort-indicator" aria-hidden="true">
+                            ↕
+                          </span>
+                        )}
+                      </button>
+                    ) : (
+                      column.label
+                    )}
                   </th>
                 ))}
               </tr>

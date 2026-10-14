@@ -1209,14 +1209,27 @@ export function Exports({
               "Completed packages appear here with their destination and image count.",
           }}
           columns={[
-            { label: "Package", render: (b) => <strong>{b.name}</strong> },
-            { label: "Images", render: (b) => b.count },
+            {
+              label: "Package",
+              sortValue: (b) => b.name,
+              render: (b) => <strong>{b.name}</strong>,
+            },
+            {
+              label: "Images",
+              sortValue: (b) => b.count,
+              render: (b) => b.count,
+            },
             {
               label: "Destination",
+              sortValue: (b) => b.path,
               className: "path-cell",
               render: (b) => <span title={b.path}>{b.path}</span>,
             },
-            { label: "Created", render: (b) => date(b.createdAt) },
+            {
+              label: "Created",
+              sortValue: (b) => b.createdAt,
+              render: (b) => date(b.createdAt),
+            },
             {
               label: "Actions",
               render: (b) => (
@@ -1258,6 +1271,7 @@ export function Exports({
           columns={[
             {
               label: "Image",
+              sortValue: (a) => a.title || a.name,
               render: (a) => (
                 <div className="image-cell">
                   <img src={localImage(a.thumbnail)} alt="" loading="lazy" />
@@ -1273,15 +1287,21 @@ export function Exports({
             },
             {
               label: "Resolution",
+              sortValue: (a) => a.width * a.height,
               render: (a) => megapixels(a.width, a.height),
             },
             {
               label: "Metadata",
+              sortValue: (a) => a.keywords.length,
               render: (a) => (
                 <Badge tone="approved">{a.keywords.length} keywords</Badge>
               ),
             },
-            { label: "Created", render: (a) => date(a.createdAt) },
+            {
+              label: "Created",
+              sortValue: (a) => a.createdAt,
+              render: (a) => date(a.createdAt),
+            },
           ]}
         />
       )}

@@ -227,6 +227,7 @@ export function Generation({
           columns={[
             {
               label: "Operation",
+              sortValue: (j) => `${j.operation} ${j.provider} ${j.model}`,
               render: (j) => (
                 <button
                   className="record-link"
@@ -243,6 +244,7 @@ export function Generation({
             },
             {
               label: "Status",
+              sortValue: (j) => j.status,
               render: (j) => (
                 <>
                   <Badge tone={j.status}>{j.status}</Badge>
@@ -254,10 +256,15 @@ export function Generation({
             },
             {
               label: "Result",
+              sortValue: (j) => j.message,
               className: "prompt-cell",
               render: (j) => <span title={j.message}>{j.message}</span>,
             },
-            { label: "Created", render: (j) => date(j.createdAt) },
+            {
+              label: "Created",
+              sortValue: (j) => j.createdAt,
+              render: (j) => date(j.createdAt),
+            },
             {
               label: "Actions",
               render: (j) => (
