@@ -1,0 +1,65 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+test-results/
+playwright-report/
+.test-workspace/
+
+# Local credentials and machine configuration
+.env
+.env.*
+.npmrc
+.pypirc
+.netrc
+.aws/
+.ssh/
+.codex/
+.agents/
+credentials*
+secrets*
+*.pem
+*.key
+*.p12
+*.pfx
+*.mobileprovision
+
+# User workspaces, originals, exports, backups, and native build artifacts
+workspace/
+workspaces/
+*.sqlite*
+*.db
+*.db-*
+*.jsonl
+*.csv
+*.zip
+*.7z
+*.backup
+*.dmg
+*.app/
+*.exe
+target/
+
+# Visual references may contain private product data; keep the index only.
+/docs/screenshots/*
+!/docs/screenshots/README.md
