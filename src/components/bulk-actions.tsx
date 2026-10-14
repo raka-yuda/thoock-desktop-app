@@ -18,13 +18,14 @@ export function BulkActions({
       <section className="selection-bar" aria-label="Selection actions">
         <div className="selection-summary">
           <span className="selection-emblem" aria-hidden="true">
-            <CheckIcon size={18} />
+            <CheckIcon size={22} />
           </span>
           <div>
             <strong aria-live="polite">
               {count} {noun}
               {count === 1 ? "" : "s"} selected
             </strong>
+            <p>Apply one action to the current selection.</p>
           </div>
         </div>
         <div className="selection-actions">{children}</div>
@@ -33,7 +34,7 @@ export function BulkActions({
           aria-label="Clear selection"
           onClick={onClear}
         >
-          <XIcon size={18} />
+          <XIcon size={20} />
         </Button>
       </section>
     </div>
