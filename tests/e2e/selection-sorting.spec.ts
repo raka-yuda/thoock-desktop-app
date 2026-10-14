@@ -10,6 +10,13 @@ test("review selection controls stay square and bulk actions stay at viewport bo
   await expect(
     page.getByText("1 image selected", { exact: true }),
   ).toBeVisible();
+  const tile = page.locator(".image-select-tile").first();
+  await expect(tile).toHaveCSS("width", "44px");
+  await expect(tile).toHaveCSS("height", "44px");
+  await expect(tile.locator("input")).toBeChecked();
+  const panel = await page.locator(".selection-bar").boundingBox();
+  expect(panel!.height).toBeLessThanOrEqual(60);
+  expect(panel!.width).toBeLessThan(960);
   for (const selector of [".image-checkbox", ".image-expand"]) {
     const box = await page.locator(selector).first().boundingBox();
     expect(box!.width).toBe(box!.height);

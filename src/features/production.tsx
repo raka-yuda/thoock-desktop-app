@@ -428,13 +428,15 @@ export function Review({
                   >
                     <ArrowsOutSimpleIcon size={16} />
                   </Button>
-                  <input
-                    className="image-checkbox"
-                    type="checkbox"
-                    checked={selected.has(a.id)}
-                    aria-label={`Select ${a.name}`}
-                    onChange={(e) => onSelect([a.id], e.target.checked)}
-                  />
+                  <label className="image-select-tile">
+                    <input
+                      className="image-checkbox"
+                      type="checkbox"
+                      checked={selected.has(a.id)}
+                      aria-label={`Select ${a.name}`}
+                      onChange={(e) => onSelect([a.id], e.target.checked)}
+                    />
+                  </label>
                 </div>
                 <div className="asset-info">
                   <div className="asset-title">
