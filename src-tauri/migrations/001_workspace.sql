@@ -1,0 +1,15 @@
+PRAGMA foreign_keys = ON;
+CREATE TABLE workspace_info (id TEXT PRIMARY KEY, schema_version INTEGER NOT NULL, created_at TEXT NOT NULL);
+CREATE TABLE settings (key TEXT PRIMARY KEY, value TEXT NOT NULL);
+CREATE TABLE opportunities (id TEXT PRIMARY KEY, topic TEXT NOT NULL, data TEXT NOT NULL, created_at TEXT NOT NULL);
+CREATE TABLE briefs (id TEXT PRIMARY KEY, opportunity_id TEXT REFERENCES opportunities(id), title TEXT NOT NULL, data TEXT NOT NULL, created_at TEXT NOT NULL);
+CREATE TABLE assets (id TEXT PRIMARY KEY, brief_id TEXT REFERENCES briefs(id), hash TEXT NOT NULL UNIQUE, original TEXT NOT NULL, current TEXT NOT NULL, data TEXT NOT NULL, created_at TEXT NOT NULL);
+CREATE TABLE jobs (id TEXT PRIMARY KEY, data TEXT NOT NULL, status TEXT NOT NULL, created_at TEXT NOT NULL);
+CREATE TABLE provider_logs (id TEXT PRIMARY KEY, data TEXT NOT NULL, created_at TEXT NOT NULL);
+CREATE TABLE export_batches (id TEXT PRIMARY KEY, data TEXT NOT NULL, created_at TEXT NOT NULL);
+CREATE TABLE export_items (batch_id TEXT NOT NULL REFERENCES export_batches(id), asset_id TEXT NOT NULL REFERENCES assets(id), PRIMARY KEY (batch_id, asset_id));
+CREATE TABLE credential_refs (provider_id TEXT PRIMARY KEY, vault_entry TEXT NOT NULL, last_tested TEXT, status TEXT NOT NULL DEFAULT 'untested');
+CREATE INDEX briefs_opportunity ON briefs(opportunity_id);
+CREATE INDEX assets_brief ON assets(brief_id);
+CREATE INDEX jobs_status ON jobs(status);
+PRAGMA user_version = 1;
